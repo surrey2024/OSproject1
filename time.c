@@ -39,7 +39,7 @@ int main(int argc, const char *argv[]){
     time(&timer2);
     tm_info2 = localtime(&timer2);
     strftime(buffer2, 30, "%Y-%m-%d %H:%M:%S", tm_info2);
-    printf("pid %d : time.o start at |%s| and finish at time |%s|\n", getpid(), buffer1, buffer2);
+    //printf("pid %d : time.o start at |%s| and finish at time |%s|\n", getpid(), buffer1, buffer2);
 
 
     int c, d;

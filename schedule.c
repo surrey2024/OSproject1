@@ -46,12 +46,12 @@ void print_affinity(){
 
 void parent_fork(int i){
 
-    fprintf(stderr, "parent fork: %s\n", N[i]);
+    //fprintf(stderr, "parent fork: %s\n", N[i]);
     if((pid[i] = fork()) < 0){
         err_sys("fork error");
     }
     else if(pid[i] == 0){ /* child */
-        print_affinity();
+        //print_affinity();
         char tmp[100];
         sprintf(tmp, "%d", T[i]);
         execlp("./time.o", "./time.o", tmp, (char *)0);
@@ -83,7 +83,7 @@ void parent_wait(){
             if(wpid != 0){
                 finished++;
                 arr_f[i] = 1;
-                printf("end waiting %s\n", N[i]);
+                //printf("end waiting %s\n", N[i]);
             }
         }
     } while(finished < p_num);
@@ -110,7 +110,7 @@ void PSJF(){
             else
                 bang = R[i];
         }
-        printf("Check 1\n");
+        //printf("Check 1\n");
         bang = R[i];
         for(int j = i-1; j >= is_finish; j--){
             if(rest_time[j] > rest_time[j+1]){
@@ -125,23 +125,23 @@ void PSJF(){
                 //char tmp[33]; strcpy(tmp, N[j]); strcpy(N[j], N[j+1]); strcpy(N[j+1], tmp);
             }
         }
-        printf("Check 2\n");
+        //printf("Check 2\n");
         for(int j = 0; j <= i; j++){
-            printf("The %d one is %s, P[%d] = %d, remain time = %d.\n",j+1,N[P[j]],j,P[j],rest_time[j]);	
+            //printf("The %d one is %s, P[%d] = %d, remain time = %d.\n",j+1,N[P[j]],j,P[j],rest_time[j]);	
         }
     }
-    printf("After sorting:\n\n");
+    //printf("After sorting:\n\n");
     for(int i = 0; i < p_num; i++){
         //printf("%s %d %d\n", N[i], R[i], T[i]);
         tmp_s[i] = T[i];
     }
-    printf("\n\n");
+    //printf("\n\n");
     int temp_P[101];
     for(int i = 0; i < p_num; i++)
         temp_P[P[i]] = i;
     for(int i = 0; i < p_num; i++){
         P[i] = p_num - temp_P[i];
-        printf("P[%d] = %d.\n",i,P[i]);
+        //printf("P[%d] = %d.\n",i,P[i]);
     }
    
     int time_count = 0;
@@ -164,7 +164,7 @@ void SJF(){
             if(R[j] > R[j+1] || (R[j] == R[j+1]&&T[j] > T[j+1])){ swap(&R[j], &R[j+1]); swap(&T[j], &T[j+1]); \
                 char tmp[33]; strcpy(tmp, N[j]); strcpy(N[j], N[j+1]); strcpy(N[j+1], tmp);}
 
-    printf("After sorting:\n\n");
+    //printf("After sorting:\n\n");
     for(int i = 0; i < p_num; i++){
         //printf("%s %d %d\n", N[i], R[i], T[i]);
         tmp_s[i] = T[i];
@@ -173,15 +173,16 @@ void SJF(){
     int temp_P[101];
     for(int i = 0; i < p_num; i++)
         P[i] = i;
+    /*
     for(int j = 0;j < p_num; j++)
         printf("The %d one is %s, P[%d] = %d.\n",j+1,N[P[j]],j,P[j]);	
-
+    */
     int point,finish_time = R[0];
     for(int i = 0; i < p_num; i++){
         point = i;
-        printf("------------------------------------------------\n");
+        //printf("------------------------------------------------\n");
         finish_time += T[P[i]];
-        printf("Finish time is %d after process %d is done.\n",finish_time, P[i]);
+        //printf("Finish time is %d after process %d is done.\n",finish_time, P[i]);
         for(int j = i ; j < p_num; j++){
             if(R[P[j]] > finish_time) break;
             point++;
@@ -190,20 +191,17 @@ void SJF(){
             for(int k = i + 1; k < j; k++)
                 if(T[P[k]] > T[P[k+1]]) swap(&P[k],&P[k+1]);
 
-        for(int j = 0;j < p_num; j++)
-            printf("The %d one is %s, P[%d] = %d.\n",j+1,N[P[j]],j,P[j]);
+        //for(int j = 0;j < p_num; j++)
+            //printf("The %d one is %s, P[%d] = %d.\n",j+1,N[P[j]],j,P[j]);
     }
 
     for(int i = 0; i < p_num; i++)
         temp_P[P[i]] = i;
     for(int i = 0; i < p_num; i++){
         P[i] = p_num - temp_P[i];
-        printf("P[%d] = %d.\n",i,P[i]);
+        //printf("P[%d] = %d.\n",i,P[i]);
     }
-    for(int i = 0; i < p_num; i++){
-        printf("%s %d %d, priority = %d\n", N[i], R[i], T[i], P[i]);
-    }
-    printf("\n\n");
+    //printf("\n\n");
     
     int time_count = 0;
     for(int i = 0; i < p_num; i++){
@@ -225,12 +223,12 @@ void FIFO(){
             if(R[j] > R[j+1]){ swap(&R[j], &R[j+1]); swap(&T[j], &T[j+1]); \
                 char tmp[33]; strcpy(tmp, N[j]); strcpy(N[j], N[j+1]); strcpy(N[j+1], tmp);}
 
-    printf("After sorting:\n\n");
+    //printf("After sorting:\n\n");
     for(int i = 0; i < p_num; i++){
         P[i] = p_num - 1 - i;
-        printf("%s %d %d\n", N[i], R[i], T[i]);
+        //printf("%s %d %d\n", N[i], R[i], T[i]);
     }
-    printf("\n\n");
+    //printf("\n\n");
 
     /* Set scheduler */
     struct sched_param param;
@@ -262,12 +260,12 @@ void RR(){
             if(R[j] > R[j+1]){ swap(&R[j], &R[j+1]); swap(&T[j], &T[j+1]); \
                 char tmp[33]; strcpy(tmp, N[j]); strcpy(N[j], N[j+1]); strcpy(N[j+1], tmp);}
 
-    printf("After sorting:\n\n");
+    //printf("After sorting:\n\n");
     for(int i = 0; i < p_num; i++){
         P[i] = p_num - 1 - i;
-        printf("%s %d %d\n", N[i], R[i], T[i]);
+        //printf("%s %d %d\n", N[i], R[i], T[i]);
     }
-    printf("\n\n");
+    //printf("\n\n");
 
     //for(int i = 0; i < p_num; i++) P[i] = i;
     /* Set scheduler */
@@ -293,7 +291,7 @@ void RR(){
             	if(wpid != 0){
             	    start_time = time_count;
             	    arr_f[queue[head++]] = 1;
-            	    printf("end waiting %s\n", N[queue[head - 1]]);
+                    // printf("end waiting %s\n", N[queue[head - 1]]);
             	}	
             }
         
@@ -301,13 +299,13 @@ void RR(){
             if(time_count-start_time == 500){
                 int temp = queue[head];
                 start_time = time_count;
-                printf("After Round-Robin:\nThe sequence of process is [");
+                //printf("After Round-Robin:\nThe sequence of process is [");
                 for(int k = head; k < tail-1; k++){
                     queue[k] = queue[k+1];
-                    printf("%d ",queue[k]);
+                    //printf("%d ",queue[k]);
                 }
                 queue[tail - 1] = temp;
-                printf("%d]\n",queue[tail - 1]);
+                //printf("%d]\n",queue[tail - 1]);
                 for(int k = head; k < tail; k++){
                     P[queue[k]] = p_num - 1 - k; 
                 }
@@ -327,21 +325,21 @@ void RR(){
             for(k=0;k<1000000UL;k++);
             time_count++;
         }
-    	fprintf(stderr, "parent fork: %s\n", N[i]);
+    	//fprintf(stderr, "parent fork: %s\n", N[i]);
     	if((pid[i] = fork()) < 0){
     	    err_sys("fork error");
     	}
     	else if(pid[i] == 0){ /* child */
             /* Reset scheduler */
             //struct sched_param param;
-            print_affinity();
+            //print_affinity();
             char tmp[100];
             sprintf(tmp, "%d", T[i]);
-            fprintf(stderr, "I start at time %d, p=%d.\n",time_count, 2 + P[i]);
+            //fprintf(stderr, "I start at time %d, p=%d.\n",time_count, 2 + P[i]);
             execlp("./time.o", "./time.o", tmp, (char *)0);
     	}
     	else{
-    	    //usleep(10000);
+
             queue[tail++] = i;
             /* Reset CPU */ 
             cpu_set_t my_set;
@@ -366,20 +364,20 @@ void RR(){
                     if(wpid == -1) err_sys("wait child error!");
                     start_time = time_count;
         	    arr_f[queue[head++]] = 1;
-        	    printf("end waiting %s\n", N[queue[head - 1]]);
+        	    //printf("end waiting %s\n", N[queue[head - 1]]);
         	}
         }
         if(head == tail) start_time = time_count;
         if(time_count-start_time == 500){
             int temp = queue[head];
             start_time = time_count;
-            printf("After Round-Robin:\nThe sequence of process is [");
+            //printf("After Round-Robin:\nThe sequence of process is [");
             for(int k = head; k < tail-1; k++){
                 queue[k] = queue[k+1];
-                printf("%d ",queue[k]);
+                // printf("%d ",queue[k]);
             }
             queue[tail - 1] = temp;
-            printf("%d]\n",queue[tail - 1]);
+            //printf("%d]\n",queue[tail - 1]);
             for(int k = head; k < tail; k++){
                 P[queue[k]] = p_num - 1 - k; 
             }
@@ -401,7 +399,7 @@ void RR(){
     } while(head != p_num || head != tail);
 }
 int main(int argc, const char *argv[]){
-    print_affinity();
+    //print_affinity();
 
     char type[20];
     scanf("%s", type);
@@ -410,17 +408,20 @@ int main(int argc, const char *argv[]){
         scanf("%s%d%d",N[i],&R[i],&T[i]);
         P[i] = i;
     }
+    
+    /*
     printf("%s %d\n", type, p_num);
     for(int i = 0; i < p_num; i++){
         printf("%s %d %d\n", N[i], R[i], T[i]);
     }
-
+    */
+    
     /* Set CPU */ 
     cpu_set_t my_set;        /* Define your cpu_set bit mask. */
     CPU_ZERO(&my_set);       /* Initialize it all to 0, i.e. no CPUs selected. */
     CPU_SET(1, &my_set);     /* set the bit that represents core 2. */
     sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
-    print_affinity();
+    //print_affinity();
 
     /* Set scheduler */
     struct sched_param param;
@@ -448,6 +449,9 @@ int main(int argc, const char *argv[]){
     default:
         puts("Not valid input");
         exit(1);
+    }
+    for(int i = 0; i < p_num; i++){
+        printf("%s %d\n", N[i], pid[i]);
     }
     return 0;
 }
